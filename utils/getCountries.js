@@ -1722,15 +1722,16 @@ const countries = [{
 	// Accepts countries `dialCode` and returns its countryCode
 	getCountryCodeByDialCode = (dialCode) => {
 		if (dialCode) {
-			return countries.find((country) => country.dialCode === dialCode).iso2;
+			return countries.find((country) => country.dialCode === dialCode)?.iso2;
 		}
 	},
 
 	// Accepts countries `iso2` code and returns its flag url
+	// https://flagcdn.com/in.svg
 	getCountryFlagByCountryCode = (countryCode) => {
-		// https://flagcdn.com/in.svg
+		countryCode = countries.find((country) => country.iso2 === countryCode)?.iso2;
 		if (countryCode) {
-			return `https://raw.githubusercontent.com/behdad/region-flags/gh-pages/svg/${ countryCode.toUpperCase() }.svg`;
+			return `https://raw.githubusercontent.com/behdad/region-flags/gh-pages/svg/${ countryCode?.toUpperCase() }.svg`;
 		}
 	},
 

@@ -7,20 +7,19 @@ const express = require('express'),
 
 require('dotenv');
 
-app.get('/getAllCountries', (req, res) => {
+app.get('/getCountries', (req, res) => {
 	res.json(getAllCountries());
 });
-app.get('/getCountryCodeByName', (req, res) => {
-	const { countryName } = req.query;
+app.get('/getCountryCode', (req, res) => {
+	const { name } = req.query;
 	res.json(getCountryCodeByName(countryName));
 });
-app.get('/getCountryFlagByCountryCode', (req, res) => {
-	const { CountryCode } = req.query;
-	res.pipe(getCountryFlagByCountryCode(CountryCode));
-});
-app.get('/getCountryFlagByName', (req, res) => {
-	const { countryName } = req.query;
-	request(getCountryFlagByName(countryName)).pipe(res);
+app.get('/getCountryFlag', (req, res) => {
+	const { country } = req.query,
+		countryFlag = getCountryFlagByCountryCode(country) || getCountryFlagByName(country);
+	
+	if (!countryFlag) return res.json({ error: 'Please provide valid country name/code' });
+	request(countryFlag).pipe(res)
 });
 
 app.listen(process.env.PORT || 8080, () => {
